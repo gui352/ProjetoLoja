@@ -23,19 +23,22 @@ public class ProgramaPrincipal {
 				produtos.add(produtoController.cadastrarProduto());
 				break;
 			case 2:
-				System.out.println(produtoController.listarProdutos(produtos));
+				produtoController.listarProdutos(produtos);
 				break;
 			case 3:
 				produtoController.editarProduto(produtos);
+				break;
+			case 4:
+				produtoController.removerProduto(produtos);
 				break;
 			case 9:
 				sair = true;
 				break;
 			default:
-				System.out.println("Opção inválida meu rei!!!");
+				System.out.println("Opção inválida!!!");
 				break;
 			}
 		} while (!sair);
-		System.out.println("Valeu meu rei, tmj");
+		System.out.println("Programa encerrado!");
 	}
 }
