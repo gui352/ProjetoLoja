@@ -3,30 +3,29 @@ package br.com.senai.model;
 public class ProdutoModel {
 
 	// Atributos
-	private String nomeDoProduto;
+	private String nomdeDoProduto;
 	private double precoDoProduto;
-	private int quantidadeDoProduto;
+	private int quantidadeDeProduto;
 	private double saldoEmEstoque;
-
-	// Construtores
+	// CONSTRUCTORS
 	public ProdutoModel() {
 	}
 
-	public ProdutoModel(String nomeDoProduto, double precoDoProduto, int quantidadeDoProduto, double saldoEmEstoque) {
+	public ProdutoModel(String nomdeDoProduto, double precoDoProduto, int quantidadeDeProduto, double saldoEmEstoque) {
 		super();
-		this.nomeDoProduto = nomeDoProduto;
+		this.nomdeDoProduto = nomdeDoProduto;
 		this.precoDoProduto = precoDoProduto;
-		this.quantidadeDoProduto = quantidadeDoProduto;
+		this.quantidadeDeProduto = quantidadeDeProduto;
 		this.saldoEmEstoque = saldoEmEstoque;
 	}
 
-	// Metodos
+	// METODOS ACE/MOD
 	public String getNomeDoProduto() {
-		return nomeDoProduto;
+		return nomdeDoProduto;
 	}
 
-	public void setNomeDoProduto(String nomeDoProduto) {
-		this.nomeDoProduto = nomeDoProduto;
+	public void setNomeDoProduto(String nomdeDoProduto) {
+		this.nomdeDoProduto = nomdeDoProduto;
 	}
 
 	public double getPrecoDoProduto() {
@@ -37,13 +36,12 @@ public class ProdutoModel {
 		this.precoDoProduto = precoDoProduto;
 	}
 
-	public int getQuantidadeDoProduto() {
-		return quantidadeDoProduto;
+	public int getQuantidadeDeProduto() {
+		return quantidadeDeProduto;
 	}
 
-	public void setQuantidadeDoProduto(int quantidadeDoProduto) {
-
-		this.quantidadeDoProduto = quantidadeDoProduto;
+	public void setQuantidadeDeProduto(int quantidadeDeProduto) {
+		this.quantidadeDeProduto = quantidadeDeProduto;
 	}
 
 	public double getSaldoEmEstoque() {
@@ -53,4 +51,12 @@ public class ProdutoModel {
 	public void setSaldoEmEstoque(double saldoEmEstoque) {
 		this.saldoEmEstoque = saldoEmEstoque;
 	}
+
+	@Override
+	public String toString() {
+		return "Nome do produto: " + nomdeDoProduto + "\nPreço do Produto: " + precoDoProduto
+				+ "\nQuantidade De Produto: " + quantidadeDeProduto + "\nSaldo Em Estoque: " + saldoEmEstoque;
+	}
+	
+	
 }
