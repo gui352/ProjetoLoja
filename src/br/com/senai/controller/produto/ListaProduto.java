@@ -1,42 +1,40 @@
 package br.com.senai.controller.produto;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.List;
 
+import java.sql.PreparedStatement;
+
+import br.com.dao.DataBaseConnection;
 import br.com.senai.model.ProdutoModel;
 
 public class ListaProduto {
 
-	public List<ProdutoModel> consultarProdutos(List<ProdutoModel> produtos) {
+	private Connection connection;
+	private ResultSet resultSet;
 
-		if (produtos.size() <= 0) {
-			System.out.println("Não há produtos para serem listados");
-			return null;
-		}
-		System.out.println("\n----- PRODUTOS CADASTRASDOS -----\n");
-		System.out.printf("| %2s | %10s | %8s | %4s | %9s |\n", "ID", "Produto", "Preço", "Qtd", "R$ total");
-		// for (ProdutoModel produtoModel : produtos) {
-		// System.out.printf("| %10s | %8s | %4s | %9s |\n",
-		// produtoModel.getNomdeDoProduto(),
-		// produtoModel.getPrecoDoProduto(), produtoModel.getQuantidadeDeProduto(),
-		// produtoModel.getSaldoEmEstoque());
-		//
-		// }
-		// produtos.forEach(produto -> {
-		// System.out.printf("| %2s | %10s | %8s | %4s | %9s |\n",
-		// ident,
-		// produto.getNomeDoProduto(),
-		// produto.getPrecoDoProduto(),
-		// produto.getQuantidadeDeProduto(),
-		// produto.getSaldoEmEstoque());
-		// });
-		// return produtos;
-		for (int i = 0; i < produtos.size(); i++) {
-			System.out.printf("| %2s | %10s | %8s | %4s | %9s |\n", i + 1, produtos.get(i).getNomeDoProduto(),
-					produtos.get(i).getPrecoDoProduto(), produtos.get(i).getQuantidadeDeProduto(),
-					produtos.get(i).getSaldoEmEstoque());
-		}
-
-		return produtos;
+	public ListaProduto() {
+		connection = DataBaseConnection.getInstance().getConnection();
 	}
 
+	public ResultSet consultarProdutos() {
+
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement("select * from produto");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			System.out.println("\n----- PRODUTOS CADASTRASDOS -----\n");
+			System.out.printf("| %2s | %15s | %8s | %4s | %9s |\n", "ID", "Produto", "Preço", "Qtd", "R$ total");
+			while (resultSet.next()) {
+
+				System.out.printf("| %2s | %15s | %8s | %4s | %9.2f |\n", resultSet.getInt("codigo"),
+						resultSet.getString("nomeDoProduto"), resultSet.getDouble("precoDoProduto"),
+						resultSet.getInt("quantidadeDeProduto"), resultSet.getDouble("saldoEmEstoque"));
+			}
+			return resultSet;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
