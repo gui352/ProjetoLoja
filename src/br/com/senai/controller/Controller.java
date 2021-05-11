@@ -1,13 +1,17 @@
 package br.com.senai.controller;
 
+import java.util.List;
 import java.util.Scanner;
 
+import br.com.senai.controller.carrinho.ListaCarrinho;
 import br.com.senai.controller.produto.ListaProduto;
+import br.com.senai.model.CarrinhoModel;
+import br.com.senai.model.ProdutoModel;
 
 public class Controller {
 
 	private Scanner dgt;
-	ListaProduto listaProduto = new ListaProduto();
+	ListaProduto ListaProduto = new ListaProduto();
 
 	public Controller() {
 		dgt = new Scanner(System.in);
@@ -17,7 +21,6 @@ public class Controller {
 		System.out.print("> ");
 		return dgt.nextInt();
 	}
-
 
 	public void menu() {
 		System.out.println("\n--- MENU ---\n");

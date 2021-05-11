@@ -2,12 +2,10 @@ package br.com.senai.controller.carrinho;
 
 import java.util.List;
 
-import br.com.senai.controller.cliente.AdicionaCliente;
 import br.com.senai.model.CarrinhoModel;
+import br.com.senai.model.ProdutoModel;
 
 public class ListaCarrinho {
-	AdicionaCliente adicionaCliente = new AdicionaCliente();
-
 	public List<CarrinhoModel> listarItensNoCarrinho(List<CarrinhoModel> itensNoCarrinho) {
 		System.out.println("--- ITENS NO CARRINHO ---");
 		System.out.printf("| %2s | %10s | %8s | %4s | %9s |\n", "ID", "Produto", "Preço", "Qtd", "R$ total");
@@ -32,17 +30,15 @@ public class ListaCarrinho {
 
 		return itensNoCarrinho;
 	}
-
-	public void gerarCupom(List<CarrinhoModel> itensDoCarrinho, String cliente) {
-		ListaCarrinho listaCarrinho = new ListaCarrinho();
-
-		if (itensDoCarrinho.size() <= 0) {
-			System.out.println("Lista Vazia.");
+	public void gerarCupom(List<CarrinhoModel> itensNoCarrinho, String cliente) {
+		ListaCarrinho ListaCarrinho = new ListaCarrinho();
+		
+		if(itensNoCarrinho.size() <= 0) {
+			System.out.println("Lista vazia.");
 			return;
 		}
-
-		listaCarrinho.listarItensNoCarrinho(itensDoCarrinho);
+		ListaCarrinho.listarItensNoCarrinho(itensNoCarrinho);
 		System.out.println("Cliente: " + cliente);
-
 	}
+	
 }

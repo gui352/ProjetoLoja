@@ -5,26 +5,24 @@ import java.util.Scanner;
 
 import br.com.senai.model.ProdutoModel;
 
-public class EditaProduto {
-	ProdutoModel produto = new ProdutoModel();
-
+public class EditarProduto {
 	public ProdutoModel editarProduto(List<ProdutoModel> produtos) {
+		ProdutoModel produto = new ProdutoModel();
+		ListaProduto ListaProduto = new ListaProduto();
 		Scanner dgt = new Scanner(System.in);
-		produto = new ProdutoModel();
-		ListaProduto listaProduto = new ListaProduto();
-
+		
 		if (produtos.size() <= 0) {
 			System.out.println("Não há produtos para serem editados");
 			return null;
 		}
-		listaProduto.consultarProdutos(produtos);
+		ListaProduto.consultarProdutos();
 		System.out.println("--------- EDITAR DADOS DE PRODUTOS ----------");
 		System.out.println("Informe o ID do produto: ");
 		int id = dgt.nextInt() - 1;
-		if (id > produtos.size()) {
+		if (id >= produtos.size()) {
 			System.out.println("Produto não existe");
 		} else {
-			System.out.println("Informe o camzxxpo que deseja editar: ");
+			System.out.println("Informe o campo que deseja editar: ");
 			System.out.println("1) Nome do produto");
 			System.out.println("2) Preço unitário");
 			System.out.println("3) Quantidade");
@@ -62,7 +60,6 @@ public class EditaProduto {
 		}
 		return produto;
 	}
-
 	public List<ProdutoModel> atualizarQuantidadeEValor(List<ProdutoModel> produtos, int quantidade, int idDoProduto) {
 		ProdutoModel produto = new ProdutoModel();
 		produto.setQuantidadeDeProduto(produtos.get(idDoProduto).getQuantidadeDeProduto() - quantidade);
@@ -70,8 +67,7 @@ public class EditaProduto {
 		produto.setNomeDoProduto(produtos.get(idDoProduto).getNomeDoProduto());
 		produto.setPrecoDoProduto(produtos.get(idDoProduto).getPrecoDoProduto());
 		produtos.set(idDoProduto, produto);
-
+		
 		return produtos;
 	}
-
 }
