@@ -24,7 +24,7 @@ public class AdicionarCarrinho {
 		ListaProduto.consultarProdutos();
 		
 		System.out.println("--- ADICIONAR ITEM NO CARRINHO ---");
-		System.out.println("Informar o ID do produto: ");
+		System.out.print("Informe o ID do produto: ");
 		carrinhoModel.setIdProduto(dgt.nextInt() - 1);
 		
 		int idProduto = (carrinhoModel.getIdProduto());
@@ -33,7 +33,7 @@ public class AdicionarCarrinho {
 			System.out.println("Este produto não está cadastrado");
 			return null;
 		} 
-		System.out.println("Informe a quantidade desejada: ");
+		System.out.print("Informe a quantidade desejada: ");
 		carrinhoModel.setQuantidadeItens(dgt.nextInt());
 		
 		
