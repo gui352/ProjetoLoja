@@ -1,11 +1,19 @@
 package br.com.senai.controller.carrinho;
 
+import java.sql.Connection;
 import java.util.List;
 
+import br.com.dao.DataBaseConnection;
 import br.com.senai.model.CarrinhoModel;
 import br.com.senai.model.ProdutoModel;
 
 public class ListaCarrinho {
+	
+	private Connection connection;
+	
+	public ListaCarrinho() {
+		connection = DataBaseConnection.getInstance().getConnection();
+	}
 	public List<CarrinhoModel> listarItensNoCarrinho(List<CarrinhoModel> itensNoCarrinho) {
 		System.out.println("--- ITENS NO CARRINHO ---");
 		System.out.printf("| %2s | %10s | %8s | %4s | %9s |\n", "ID", "Produto", "Preço", "Qtd", "R$ total");

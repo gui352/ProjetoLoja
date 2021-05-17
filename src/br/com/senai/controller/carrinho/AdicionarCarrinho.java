@@ -1,35 +1,90 @@
 package br.com.senai.controller.carrinho;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Scanner;
 
 import br.com.senai.model.CarrinhoModel;
 import br.com.senai.model.ProdutoModel;
+import br.com.dao.DataBaseConnection;
 import br.com.senai.controller.produto.EditarProduto;
 import br.com.senai.controller.produto.ListaProduto;
 
 public class AdicionarCarrinho {
 	Scanner dgt = new Scanner(System.in);
+	private Connection connection;
+	ListaProduto ListaProduto = new ListaProduto();
+	EditarProduto EditarProduto = new EditarProduto();
+	CarrinhoModel carrinhoModel = new CarrinhoModel();
 	
+	public AdicionarCarrinho() {
+		connection = DataBaseConnection.getInstance().getConnection();
+	}
 	
-	public CarrinhoModel cadastrarItemCarrinho(List<ProdutoModel> produtos) {
-		ListaProduto ListaProduto = new ListaProduto();
-		EditarProduto EditarProduto = new EditarProduto();
-		CarrinhoModel carrinhoModel = new CarrinhoModel();
+	public boolean verificaSeExiste(int idDoProduto) {
+		PreparedStatement preparedStatement;
+		try {
+			String sql = "SELECT * FROM produto WHERE codigo = ?";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idDoProduto);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (!resultSet.next()) {
+				System.out.println("Este produto não existe.");
+				return false;
+			} else {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public CarrinhoModel cadastrarItemCarrinho() {
+		PreparedStatement preparedStatement;
 		
-		if(produtos.size() <= 0) {
-			System.out.println("Não há produtos. ");
+		carrinhoModel = new CarrinhoModel();
+		ListaProduto = new ListaProduto();
+		
+		int idDoProduto, qtde;
+		
+		if (ListaProduto.consultarProdutos() == (null)) {
 			return null;
 		}
-		ListaProduto.consultarProdutos();
+		
 		
 		System.out.println("--- ADICIONAR ITEM NO CARRINHO ---");
 		System.out.print("Informe o ID do produto: ");
-		carrinhoModel.setIdProduto(dgt.nextInt() - 1);
+		idDoProduto = dgt.nextInt();
+		if (!verificaSeExiste(idDoProduto)) {
+			return null;
+		}
+		System.out.print("Informe a quantidade desejada: ");
+		qtde = dgt.nextInt();
+		carrinhoModel.
 		
-		int idProduto = (carrinhoModel.getIdProduto());
+		try {
+			
+			String sql = "INSERT INTO produtosdocarrinho (nomeDoProduto, precoDoProduto, quantidadeDeProduto, ?) "
+					+ " SELECT nomeDoProduto, precoDoProduto, ? "
+					+ " FROM produto "
+					+ " WHERE codigo = ? ";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setDouble(1, carrinhoModel.getValorTotalPorItem());
+			preparedStatement.setInt(2, qtde);
+			preparedStatement.setInt(3, idDoProduto);
+			
+			preparedStatement.execute();
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao cadastrar os dados.");
+		}
 		
-		if(idProduto > produtos.size()) {
+		/*if(idProduto > produtos.size()) {
 			System.out.println("Este produto não está cadastrado");
 			return null;
 		} 
@@ -37,19 +92,19 @@ public class AdicionarCarrinho {
 		carrinhoModel.setQuantidadeItens(dgt.nextInt());
 		
 		
-		if(carrinhoModel.getQuantidadeItens() > produtos.get(carrinhoModel.getIdProduto()).getQuantidadeDeProduto()) {
+		if(carrinhoModel.getQuantidadeItens() > produto.get(carrinhoModel.getIdProduto()).getQuantidadeDeProduto()) {
 			System.out.println("O produto não possui a quantidade desejada");
 			
-		}
+		}*/
 		
-		EditarProduto.atualizarQuantidadeEValor(produtos, carrinhoModel.getQuantidadeItens(), idProduto);
+	/*	EditarProduto.atualizarQuantidadeEValor(produtos, carrinhoModel.getQuantidadeItens(), idProduto);
 		
 		carrinhoModel.setProduto(produtos.get(idProduto));
 		carrinhoModel.setValorTotalPorItem(carrinhoModel.getQuantidadeItens() *
 				produtos.get(idProduto).getPrecoDoProduto());
 		if(produtos.get(idProduto).getQuantidadeDeProduto() == 0) {
 			produtos.remove(idProduto);
-		}
+		}*/
 		return carrinhoModel;
 	}
 }
