@@ -7,7 +7,7 @@ public class DefinirCliente {
 	
 	public String definirCliente() {
 		String nome;
-		System.out.println("Informe o nome do cliente");
+		System.out.print("Informe o nome do cliente: ");
 		nome = dgt.next();
 		return nome;
 }
