@@ -6,12 +6,12 @@ public class CarrinhoModel {
 	private ProdutoModel produto;
 	private double ValorTotalPorItem;
 	
-	public CarrinhoModel(int quantidadeItens, int idProduto, ProdutoModel produto, double totalItens) {
+	public CarrinhoModel(int quantidadeItens, int idProduto, ProdutoModel produto, double valorTotalPorItem) {
 		super();
 		this.quantidadeItens = quantidadeItens;
 		this.idProduto = idProduto;
 		this.produto = produto;
-		this.ValorTotalPorItem = totalItens;
+		this.ValorTotalPorItem = valorTotalPorItem;
 	}
 	public CarrinhoModel() {
 		

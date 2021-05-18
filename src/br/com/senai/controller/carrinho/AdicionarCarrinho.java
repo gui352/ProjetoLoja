@@ -63,25 +63,35 @@ public class AdicionarCarrinho {
 		if (!verificaSeExiste(idDoProduto)) {
 			return null;
 		}
+		
+		try {
+			PreparedStatement prepareStatement = connection.prepareStatement("select * from produto where codigo = " + idDoProduto);
+			ResultSet resultSet = prepareStatement.executeQuery();
+			carrinhoModel.setValorTotalPorItem(resultSet.getDouble("precoDoProduto"));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		System.out.print("Informe a quantidade desejada: ");
 		qtde = dgt.nextInt();
-		carrinhoModel.
+		carrinhoModel.setValorTotalPorItem(carrinhoModel.getValorTotalPorItem() * qtde);
+		System.out.println("a");
+		System.out.println(carrinhoModel.getValorTotalPorItem());
 		
 		try {
 			
-			String sql = "INSERT INTO produtosdocarrinho (nomeDoProduto, precoDoProduto, quantidadeDeProduto, ?) "
-					+ " SELECT nomeDoProduto, precoDoProduto, ? "
+			String sql = "INSERT INTO produtosdocarrinho (nomeDoProduto, precoDoProduto, quantidadeDeProduto, totalPorItem) "
+					+ " SELECT nomeDoProduto, precoDoProduto, ?, ? "
 					+ " FROM produto "
 					+ " WHERE codigo = ? ";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setDouble(1, carrinhoModel.getValorTotalPorItem());
-			preparedStatement.setInt(2, qtde);
+			preparedStatement.setInt(1, qtde);
+			preparedStatement.setDouble(2, carrinhoModel.getValorTotalPorItem());
 			preparedStatement.setInt(3, idDoProduto);
 			
 			preparedStatement.execute();
 			
 		} catch (Exception e) {
-			System.out.println("Erro ao cadastrar os dados.");
+			System.out.println("Erro ao cadastrar o produto.");
 		}
 		
 		/*if(idProduto > produtos.size()) {
