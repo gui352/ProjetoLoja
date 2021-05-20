@@ -43,7 +43,7 @@ public class EditaUsuario {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
-				System.out.println("Este produto não existe.");
+				System.out.println("Este usuário não existe.");
 				return null;
 			} else {
 				clienteModel.setNome(resultSet.getString("nome"));
@@ -102,7 +102,7 @@ public class EditaUsuario {
 	private ClienteModel editarSenhaDoCliente(int id) {
 		PreparedStatement preparedStatement;
 
-		System.out.print("Informe o novo preço para o produto: ");
+		System.out.print("Informe a nova senha para o usuário: ");
 		clienteModel.setSenha(dgt.nextInt());
 
 		try {

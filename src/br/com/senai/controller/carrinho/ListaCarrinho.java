@@ -27,7 +27,7 @@ public class ListaCarrinho {
 			valorTotalDoCarrinho = resultSet.getDouble("SUM(totalPorItem)");
 
 		} catch (Exception e) {
-			System.out.println("Nem entrou");
+			System.out.println("Erro!");
 			e.printStackTrace();
 		}
 

@@ -42,7 +42,7 @@ public class DefinirCliente {
 		System.out.println("--- SISTEMA DE ENTRADA ---");
 		System.out.print("Informe seu ID: ");
 		int id = dgt.nextInt();
-		System.out.println("Informe sua senha: ");
+		System.out.print("Informe sua senha: ");
 		int senha = dgt.nextInt();
 
 		PreparedStatement preparedStatement;

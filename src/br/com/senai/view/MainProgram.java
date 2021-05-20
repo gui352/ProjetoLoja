@@ -27,31 +27,34 @@ public class MainProgram {
 		ListaUsuario listaUsuario = new ListaUsuario();
 
 		boolean sair = false;
+		
+		int id = definirCliente.loginCliente();
+		while (id == -1) {
+			System.out.println("Senha ou login inválidos!");
+			id = definirCliente.loginCliente();
+		}
 
 		do {
-			int id = definirCliente.loginCliente();
-			while (id == -1) {
-				System.out.println("Senha ou login inválidos!");
-				id = definirCliente.loginCliente();
-			}
-
 			if (definirCliente.verificarAcesso(id) == 0) {
 				Controller.menuCliente();
 				int opc = Controller.opcao();
 				switch (opc) {
-				case 1:
-					AdicionarCarrinho.cadastrarItemCarrinho();
+				case 1: 
+					ListaProduto.consultarProdutos();
 					break;
 				case 2:
-					listaCarrinho.listarItensNoCarrinho();
+					AdicionarCarrinho.cadastrarItemCarrinho();
 					break;
 				case 3:
-					EditarProduto.editarProduto();
+					listaCarrinho.listarItensNoCarrinho();
 					break;
 				case 4:
-					deletaCarrinho.removerProdutos();
+					EditarProduto.editarProduto();
 					break;
 				case 5:
+					deletaCarrinho.removerProdutos();
+					break;
+				case 6:
 					sair = true;
 					break;
 				default:
@@ -89,7 +92,6 @@ public class MainProgram {
 				case 9:
 					sair = true;
 					break;
-
 				default:
 					System.out.println("Opção inválida!!!");
 					break;

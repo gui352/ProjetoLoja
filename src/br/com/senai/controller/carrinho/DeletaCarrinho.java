@@ -57,6 +57,8 @@ public class DeletaCarrinho {
 				if (!verificaSeExite(id)) {
 					return;
 				}
+				
+				
 
 				String sql = "DELETE FROM produtosDoCarrinho WHERE codigo = ?";
 				preparedStatement = connection.prepareStatement(sql);

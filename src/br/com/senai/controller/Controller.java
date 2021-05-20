@@ -20,11 +20,12 @@ public class Controller {
 
 	public void menuCliente() {
 		System.out.println("\n--- MENU ---\n");
-		System.out.println("1) Adicionar no Carrinho");
-		System.out.println("2) Exibir carrinho ");
-		System.out.println("3) Gerar Cupom ");
-		System.out.println("4) Deletar Produto do Carrinho ");
-		System.out.println("5) Sair do sistema");
+		System.out.println("1) Listar Produtos");
+		System.out.println("2) Adicionar no Carrinho");
+		System.out.println("3) Exibir carrinho ");
+		System.out.println("4) Gerar Cupom ");
+		System.out.println("5) Deletar Produto do Carrinho ");
+		System.out.println("6) Sair do sistema");
 		System.out.println("--------------------");
 	}
 	

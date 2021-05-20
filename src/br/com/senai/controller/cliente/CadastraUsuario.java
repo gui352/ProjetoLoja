@@ -26,7 +26,7 @@ public class CadastraUsuario {
 		clienteModel.setSenha(dgt.nextInt());
 		
 		try {
-			String sql = "INSERT INTO usuarios (nome, senha) VALUES (?, ?)";
+			String sql = "INSERT INTO usuarios (id, nome, senha) VALUES (null, ?, ?)";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, clienteModel.getNome());
 			preparedStatement.setInt(2, clienteModel.getSenha());
