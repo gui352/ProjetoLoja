@@ -1,20 +1,17 @@
 package br.com.senai.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.senai.controller.Controller;
 import br.com.senai.controller.carrinho.*;
+import br.com.senai.controller.cliente.CadastraUsuario;
+import br.com.senai.controller.cliente.DefinirCliente;
+import br.com.senai.controller.cliente.DeletaUsuario;
+import br.com.senai.controller.cliente.EditaUsuario;
+import br.com.senai.controller.cliente.ListaUsuario;
 import br.com.senai.controller.produto.*;
-import br.com.senai.controller.cliente.*;
-import br.com.senai.model.CarrinhoModel;
-import br.com.senai.model.ProdutoModel;
 
 public class MainProgram {
 	public static void main(String[] args) {
-		List<ProdutoModel> produtos = new ArrayList<ProdutoModel>();
-		List<CarrinhoModel> itensNoCarrinho = new ArrayList<CarrinhoModel>();
-		
+
 		Controller Controller = new Controller();
 		ListaCarrinho listaCarrinho = new ListaCarrinho();
 		AdicionarCarrinho AdicionarCarrinho = new AdicionarCarrinho();
@@ -22,45 +19,81 @@ public class MainProgram {
 		ListaProduto ListaProduto = new ListaProduto();
 		EditarProduto EditarProduto = new EditarProduto();
 		DeletarProduto DeletarProduto = new DeletarProduto();
-		DefinirCliente DefinirCliente = new DefinirCliente();
-		
-		boolean sair = false;
-		
-		String cliente = DefinirCliente.definirCliente();
-		
-		do {
-			Controller.menu();
-			int opc = Controller.opcao();
-		
-			switch (opc) {
-			case 1:
-				CadastrarProduto.cadastrarProduto();
-				break;
-			case 2:
-				ListaProduto.consultarProdutos();
-				break;
-			case 3:
-				EditarProduto.editarProduto();
-				break;
-			case 4:
-				DeletarProduto.removerProdutos();
-				break;
-			case 5:
-				AdicionarCarrinho.cadastrarItemCarrinho();
-				break;
-			case 6:
-				listaCarrinho.listarItensNoCarrinho(itensNoCarrinho);
-				break;
-			case 7:
-				listaCarrinho.gerarCupom(itensNoCarrinho,cliente);
-				break;
-			case 9:
-				sair = true;
-				break;
+		DeletaCarrinho deletaCarrinho = new DeletaCarrinho();
+		DefinirCliente definirCliente = new DefinirCliente();
+		DeletaUsuario deletaUsuario = new DeletaUsuario();
+		EditaUsuario editaUsuario = new EditaUsuario();
+		CadastraUsuario cadastraUsuario = new CadastraUsuario();
+		ListaUsuario listaUsuario = new ListaUsuario();
 
-			default:
-				System.out.println("Opção inválida!!!");
-				break;
+		boolean sair = false;
+
+		do {
+			int id = definirCliente.loginCliente();
+			while (id == -1) {
+				System.out.println("Senha ou login inválidos!");
+				id = definirCliente.loginCliente();
+			}
+
+			if (definirCliente.verificarAcesso(id) == 0) {
+				Controller.menuCliente();
+				int opc = Controller.opcao();
+				switch (opc) {
+				case 1:
+					AdicionarCarrinho.cadastrarItemCarrinho();
+					break;
+				case 2:
+					listaCarrinho.listarItensNoCarrinho();
+					break;
+				case 3:
+					EditarProduto.editarProduto();
+					break;
+				case 4:
+					deletaCarrinho.removerProdutos();
+					break;
+				case 5:
+					sair = true;
+					break;
+				default:
+					System.out.println("Opção inválida!!!");
+					break;
+				}
+			} else {
+				Controller.menuFuncionario();
+				int opc = Controller.opcao();
+				switch (opc) {
+				case 1:
+					CadastrarProduto.cadastrarProduto();
+					break;
+				case 2:
+					ListaProduto.consultarProdutos();
+					break;
+				case 3:
+					EditarProduto.editarProduto();
+					break;
+				case 4:
+					DeletarProduto.removerProdutos();
+					break;
+				case 5:
+					cadastraUsuario.cadastrarUsuario();
+					break;
+				case 6:
+					listaUsuario.listarCliente();
+					break;
+				case 7:
+					editaUsuario.editarCliente();
+					break;
+				case 8:
+					deletaUsuario.removerUsuario();
+					break;
+				case 9:
+					sair = true;
+					break;
+
+				default:
+					System.out.println("Opção inválida!!!");
+					break;
+				}
 			}
 		} while (!sair);
 

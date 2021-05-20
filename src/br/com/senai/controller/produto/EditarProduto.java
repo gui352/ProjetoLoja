@@ -159,14 +159,22 @@ public class EditarProduto {
 
 	}
 
-	public List<ProdutoModel> atualizarQuantidadeEValor(List<ProdutoModel> produtos, int quantidade, int idDoProduto) {
-		ProdutoModel produto = new ProdutoModel();
-		produto.setQuantidadeDeProduto(produtos.get(idDoProduto).getQuantidadeDeProduto() - quantidade);
-		produto.setSaldoEmEstoque(produtos.get(idDoProduto).getPrecoDoProduto() * produto.getQuantidadeDeProduto());
-		produto.setNomeDoProduto(produtos.get(idDoProduto).getNomeDoProduto());
-		produto.setPrecoDoProduto(produtos.get(idDoProduto).getPrecoDoProduto());
-		produtos.set(idDoProduto, produto);
+	public void atualizarQuantidadeEValor (int quantidade, int idDoProduto, double valorTotal) {
+		PreparedStatement preparedStatement;
+		
+		try {
+			String sql = ("UPDATE produto SET quantidadeDeProduto = ?, saldoEmEstoque = ? WHERE codigo = ? ");
+			preparedStatement = connection.prepareStatement(sql);
 
-		return produtos;
+			preparedStatement.setDouble(1, quantidade);
+			preparedStatement.setDouble(2, valorTotal);
+			preparedStatement.setInt(3, idDoProduto);
+
+			preparedStatement.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
