@@ -6,20 +6,21 @@ import java.sql.ResultSet;
 import java.util.Scanner;
 
 import br.com.dao.DataBaseConnection;
+import br.com.senai.model.ClienteModel;
 
 public class DeletaCarrinho {
-	
+
 	Scanner dgt = new Scanner(System.in);
 	private Connection connection;
 	private ListaCarrinho listaCarrinho;
-	
+
 	public DeletaCarrinho() {
 		connection = DataBaseConnection.getInstance().getConnection();
 	}
-	
+
 	public boolean verificaSeExite(int id) {
 		PreparedStatement preparedStatement;
-		
+
 		try {
 			String sql = "SELECT * FROM produtosDoCarrinho WHERE codigo = ?";
 			preparedStatement = connection.prepareStatement(sql);
@@ -38,39 +39,71 @@ public class DeletaCarrinho {
 			return false;
 		}
 	}
-		
-	public void removerProdutos() {
-			PreparedStatement preparedStatement;
-			listaCarrinho = new ListaCarrinho();
-			
-			System.out.println("--- REMOVER PRODUTO ---");
 
-			if (listaCarrinho.listarItensNoCarrinho() == null) {
-				return;
-			}
+	public void removerProdutos(int id) {
 
-			System.out.print("Informe o ID do produto  ser removido: ");
-			int id = dgt.nextInt();
+		int atualizaProduto = 0;
+		double valorTotal = 0;
+		int quantidade = 0;
 
-			try {
+		PreparedStatement preparedStatement;
+		listaCarrinho = new ListaCarrinho();
 
-				if (!verificaSeExite(id)) {
-					return;
-				}
-				
-				
+		System.out.println("--- REMOVER PRODUTO ---");
 
-				String sql = "DELETE FROM produtosDoCarrinho WHERE codigo = ?";
-				preparedStatement = connection.prepareStatement(sql);
-				preparedStatement.setInt(1, id);
-				preparedStatement.execute();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Não foi possível excluir esta informação!");
-				return;
-			}
+		if (listaCarrinho.listarItensNoCarrinho(id) == null) {
+			return;
 		}
+
+		System.out.print("Informe o ID do produto  ser removido: ");
+		int idDoProduto = dgt.nextInt();
+
+		try {
+
+			if (!verificaSeExite(idDoProduto)) {
+				return;
+			}
+
+			String sql = ("SELECT * FROM produtosDoCarrinho WHERE codigo = ? AND idDoUsuario = ?");
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idDoProduto);
+			preparedStatement.setInt(2, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			atualizaProduto = resultSet.getInt("quantidadeDeProduto");
+			valorTotal = resultSet.getDouble("totalPorItem");
+			preparedStatement.clearParameters();
+			sql = ("SELECT * FROM produtosDoCarrinho WHERE codigo = ?");
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idDoProduto);
+			resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			quantidade = resultSet.getInt("quantidadeDeProduto");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+
+			String sql = "DELETE FROM produtosDoCarrinho WHERE codigo = ? AND idDoUsuario = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idDoProduto);
+			preparedStatement.setInt(2, id);
+			preparedStatement.execute();
+
+			sql = ("UPDATE produto SET quantidadeDeProduto = ?, saldoEmEstoque = ? WHERE codigo = ? ");
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, quantidade);
+			preparedStatement.setDouble(2, valorTotal);
+			preparedStatement.setInt(3, idDoProduto);
+			preparedStatement.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Não foi possível excluir esta informação!");
+			return;
+		}
+	}
 }
-
-

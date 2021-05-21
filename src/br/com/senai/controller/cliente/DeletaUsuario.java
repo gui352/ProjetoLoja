@@ -5,12 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+import br.com.dao.DataBaseConnection;
 
 public class DeletaUsuario {
 
 	Scanner dgt = new Scanner(System.in);
 	private Connection connection;
 	private ListaUsuario listaUsuario = new ListaUsuario();
+
+	public DeletaUsuario() {
+		connection = DataBaseConnection.getInstance().getConnection();
+	}
 
 	public boolean verificaSeExite(int id) {
 		PreparedStatement preparedStatement;
@@ -44,18 +49,14 @@ public class DeletaUsuario {
 			return;
 		}
 
-		System.out.print("Informe o ID do usuário  ser removido: ");
-		int id = dgt.nextInt();
+		System.out.print("Informe o ID do usuário a ser removido: ");
+		int idDoUsuario = dgt.nextInt();
 
 		try {
 
-			if (!verificaSeExite(id)) {
-				return;
-			}
-
-			String sql = "DELETE FROM usuarios WHERE codigo = ?";
+			String sql = "DELETE FROM usuarios WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, idDoUsuario);
 			preparedStatement.execute();
 
 		} catch (Exception e) {

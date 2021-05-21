@@ -23,18 +23,18 @@ public class DefinirCliente {
 			preparedStatement = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ? ");
 			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			
+
 			if (!resultSet.next()) {
 				System.out.println("Não possui usuários cadastrados.");
 				return -1;
 			}
-			
+
 			return resultSet.getInt("acesso");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return -1;
 	}
 

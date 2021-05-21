@@ -7,41 +7,41 @@ import java.sql.ResultSet;
 import br.com.dao.DataBaseConnection;
 
 public class ListaUsuario {
-	
+
 	private Connection connection;
-	
+
 	public ListaUsuario() {
 		connection = DataBaseConnection.getInstance().getConnection();
 	}
-	
+
 	public ResultSet listarCliente() {
-		
+
 		PreparedStatement preparedStatement;
-		
+
 		try {
 			preparedStatement = connection.prepareStatement("SELECT * FROM usuarios ORDER BY id ASC;");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			
-			if(!resultSet.next()) {
+
+			if (!resultSet.next()) {
 				System.out.println("Não possui usuários cadastrados.");
 				return null;
 			}
-			
+
 			System.out.println("\n----- USUÁRIOS CADASTRASDOS -----\n");
-			System.out.printf("| %2s | %25s | %4s | \n", "ID", "Nome", "Senha");
-			
+			System.out.printf("| %2s | %25s | %6s | %7s | \n", "ID", "Nome", "Senha", "Acesso");
+
 			resultSet.previous();
-			
+
 			while (resultSet.next()) {
 
-				System.out.printf("| %2s | %25s | %4s |\n", resultSet.getInt("id"),
-						resultSet.getString("nome"), resultSet.getDouble("senha"));
+				System.out.printf("| %2s | %25s | %6s | %7s |\n", resultSet.getInt("id"), resultSet.getString("nome"),
+						resultSet.getDouble("senha"), resultSet.getInt("acesso"));
 			}
 			return resultSet;
 		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
 }

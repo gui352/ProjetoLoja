@@ -9,16 +9,16 @@ import br.com.dao.DataBaseConnection;
 import br.com.senai.model.ClienteModel;
 
 public class EditaUsuario {
-	
+
 	private ClienteModel clienteModel = new ClienteModel();
 	private ListaUsuario listaUsuario = new ListaUsuario();
 	private Scanner dgt = new Scanner(System.in);
 	private Connection connection;
-	
+
 	public EditaUsuario() {
 		connection = DataBaseConnection.getInstance().getConnection();
 	}
-	
+
 	public ClienteModel editarCliente() {
 		PreparedStatement preparedStatement;
 
@@ -58,6 +58,7 @@ public class EditaUsuario {
 		System.out.println("--- CAMPOS ---");
 		System.out.println("1) Nome do usuário");
 		System.out.println("2) Senha do usuário");
+		System.out.println("3) Nível de acesso");
 		System.out.print("Informe o campo que deseja editar: ");
 		index = dgt.nextInt();
 
@@ -67,6 +68,9 @@ public class EditaUsuario {
 			break;
 		case 2:
 			editarSenhaDoCliente(id);
+			break;
+		case 3:
+			nivelDoCliente(id);
 			break;
 		default:
 			System.out.println("Opção inválida!!");
@@ -82,7 +86,7 @@ public class EditaUsuario {
 		clienteModel.setNome(dgt.next());
 
 		try {
-			String sql = "UPDATE usuarios SET nome = ? WHERE codigo = ?";
+			String sql = "UPDATE usuarios SET nome = ? WHERE id = ?";
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setString(1, clienteModel.getNome());
@@ -110,6 +114,29 @@ public class EditaUsuario {
 			preparedStatement = connection.prepareStatement(sql);
 
 			preparedStatement.setDouble(1, clienteModel.getSenha());
+			preparedStatement.setInt(2, id);
+
+			preparedStatement.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return clienteModel;
+	}
+
+	private ClienteModel nivelDoCliente(int id) {
+		PreparedStatement preparedStatement;
+
+		System.out.print("Informe o nível de acesso para o usuário: ");
+		clienteModel.setAcesso(dgt.nextInt());
+
+		try {
+			String sql = "UPDATE usuarios SET acesso = ? WHERE id = ?";
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setDouble(1, clienteModel.getAcesso());
 			preparedStatement.setInt(2, id);
 
 			preparedStatement.execute();

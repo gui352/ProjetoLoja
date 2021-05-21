@@ -5,13 +5,23 @@ public class ClienteModel {
 	private int id;
 	private String nome;
 	private int senha;
+	private int acesso;
 	
 	
-	public ClienteModel(int id, String nome, int senha) {
+	public int getAcesso() {
+		return acesso;
+	}
+
+	public void setAcesso(int acesso) {
+		this.acesso = acesso;
+	}
+
+	public ClienteModel(int id, String nome, int senha, int acesso) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.senha = senha;
+		this.acesso = acesso;
 	}
 	
 	public ClienteModel() {

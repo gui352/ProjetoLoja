@@ -24,12 +24,15 @@ public class CadastraUsuario {
 		clienteModel.setNome(dgt.next());
 		System.out.print("Senha:");
 		clienteModel.setSenha(dgt.nextInt());
+		System.out.print("Acesso:");
+		clienteModel.setAcesso(dgt.nextInt());
 		
 		try {
-			String sql = "INSERT INTO usuarios (id, nome, senha) VALUES (null, ?, ?)";
+			String sql = "INSERT INTO usuarios (nome, senha, acesso) VALUES (?, ?, ?)";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, clienteModel.getNome());
 			preparedStatement.setInt(2, clienteModel.getSenha());
+			preparedStatement.setInt(3, clienteModel.getAcesso());
 			preparedStatement.execute();
 		}catch (Exception e) {
 			System.out.println("Erro ao cadastrar os dados.");

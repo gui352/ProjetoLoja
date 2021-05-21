@@ -39,7 +39,8 @@ public class Controller {
 		System.out.println("6) Listar Cliente");
 		System.out.println("7) Editar Cliente");
 		System.out.println("8) Remover Cliente");
-		System.out.println("9) Sair do sistema");
+		System.out.println("9) Histórico de Vendas");
+		System.out.println("10) Sair do sistema");
 		System.out.println("--------------------");
 	}
 
