@@ -48,6 +48,10 @@ public class AdicionarCarrinho {
 		carrinhoModel = new CarrinhoModel();
 		ListaProduto = new ListaProduto();
 
+		int quantidadeDeEstoque = 0;
+		double preco = -1;
+		String nomeDoUsuario = "";
+
 		int idDoProduto, qtde;
 
 		if (ListaProduto.consultarProdutos() == (null)) {
@@ -60,8 +64,26 @@ public class AdicionarCarrinho {
 		if (!verificaSeExiste(idDoProduto)) {
 			return null;
 		}
-		int quantidadeDeEstoque = 0;
-		double preco = -1;
+
+		try {
+			String nome = "SELECT nome FROM usuarios WHERE id = ? ";
+			preparedStatement = connection.prepareStatement(nome);
+			preparedStatement.setInt(1, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+			nomeDoUsuario = resultSet.getString("nome");
+
+			if (!resultSet.next()) {
+				System.out.println("Login inexistente");
+				return null;
+			}
+			resultSet.previous();
+
+		} catch (Exception e) {
+			System.out.println("Error");
+			return null;
+		}
+
 		try {
 			PreparedStatement prepareStatement = connection.prepareStatement("SELECT * FROM produto WHERE codigo = ? ");
 			prepareStatement.setInt(1, idDoProduto);
@@ -79,31 +101,33 @@ public class AdicionarCarrinho {
 		carrinhoModel.setValorTotalPorItem(preco * qtde);
 
 		try {
-			
-			String sql = "INSERT INTO produtosDoCarrinho (codigo, nomeDoProduto, precoDoProduto, quantidadeDeProduto, totalPorItem, idDoUsuario) "
-					+ " SELECT ?, nomeDoProduto, precoDoProduto, ?, ?, ? " + " FROM produto " + " WHERE codigo = ? ";
+
+			String sql = "INSERT INTO produtosDoCarrinho (codigo, nomeDoProduto, precoDoProduto, quantidadeDeProduto, totalPorItem, idDoUsuario, nomeDoUsuario) "
+					+ " SELECT ?, nomeDoProduto, precoDoProduto, ?, ?, ?, ? " + " FROM produto " + " WHERE codigo = ? ";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, idDoProduto);
 			preparedStatement.setInt(2, qtde);
 			preparedStatement.setDouble(3, carrinhoModel.getValorTotalPorItem());
 			preparedStatement.setInt(4, id);
-			preparedStatement.setInt(5, idDoProduto);
+			preparedStatement.setString(5, nomeDoUsuario);
+			preparedStatement.setInt(6, idDoProduto);
+
 			preparedStatement.execute();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Erro ao cadastrar o produto.");
 		}
-				
+
 		try {
-			
+
 			String sql = ("UPDATE produto SET quantidadeDeProduto = ?, saldoEmEstoque = ? WHERE codigo = ? ");
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, quantidadeDeEstoque);
 			preparedStatement.setDouble(2, quantidadeDeEstoque * preco);
 			preparedStatement.setInt(3, idDoProduto);
 			preparedStatement.execute();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Não foi possível excluir esta informação!");

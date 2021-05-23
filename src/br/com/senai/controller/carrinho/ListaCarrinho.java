@@ -33,15 +33,17 @@ public class ListaCarrinho {
 			}
 
 			System.out.println("\n----- PRODUTOS CADASTRADOS -----\n");
-			System.out.printf("| %2s | %15s | %8s | %4s | %9s |\n", "ID", "Produto", "Preço", "Qtd", "R$ Total");
+			System.out.printf("| %2s | %15s | %8s | %4s | %9s | %11s | %25s | \n", "ID", "Produto", "Preço", "Qtd",
+					"R$ Total", "ID Cliente", "Nome Cliente");
 
 			resultSet.previous();
 
 			while (resultSet.next()) {
 
-				System.out.printf("| %2s | %15s | %8s | %4s | %9.2f |\n", resultSet.getInt("codigo"),
+				System.out.printf("| %2s | %15s | %8s | %4s | %9.2f | %11s | %25s |\n", resultSet.getInt("codigo"),
 						resultSet.getString("nomeDoProduto"), resultSet.getDouble("precoDoProduto"),
-						resultSet.getInt("quantidadeDeProduto"), resultSet.getDouble("totalPorItem"));
+						resultSet.getInt("quantidadeDeProduto"), resultSet.getDouble("totalPorItem"),
+						resultSet.getInt("id"), resultSet.getString("nome"));
 				valorTotalDoCarrinho += resultSet.getDouble("totalPorItem");
 			}
 
@@ -85,13 +87,12 @@ public class ListaCarrinho {
 		}
 
 	}
-	
+
 	public ResultSet gerarHistorico(int id) {
-		PreparedStatement preparedStatement; 
-		
-		
+		PreparedStatement preparedStatement;
+
 		try {
-			preparedStatement = connection.prepareStatement("SELECT codigo, nomeDoProduto, precoDoProduto, quantidadeDeProduto, totalPorItem, usuarios.nome FROM usuarios, produtosDoCarrinho;");
+			preparedStatement = connection.prepareStatement("SELECT * FROM produtosDoCarrinho ORDER BY codigo ASC ");
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			if (!resultSet.next()) {
@@ -100,21 +101,24 @@ public class ListaCarrinho {
 			}
 
 			System.out.println("\n----- PRODUTOS CADASTRADOS -----\n");
-			System.out.printf("| %2s | %15s | %8s | %4s | %9s |  %25s |\n", "ID", "Produto", "Preço", "Qtd", "R$ Total", "Nome do cliente");
+			System.out.printf("| %2s | %15s | %8s | %4s | %9s | %11s | %25s | \n", "ID", "Produto", "Preço", "Qtd",
+					"R$ Total", "ID Cliente", "Nome Cliente");
 
 			resultSet.previous();
 
 			while (resultSet.next()) {
 
-				System.out.printf("| %2s | %15s | %8s | %4s | %9.2f | %25s |\n", resultSet.getInt("codigo"),
+				System.out.printf("| %2s | %15s | %8s | %4s | %9.2f | %11s | %25s |\n", resultSet.getInt("codigo"),
 						resultSet.getString("nomeDoProduto"), resultSet.getDouble("precoDoProduto"),
-						resultSet.getInt("quantidadeDeProduto"), resultSet.getDouble("totalPorItem"), resultSet.getString("nome"));
-				
+						resultSet.getInt("quantidadeDeProduto"), resultSet.getDouble("totalPorItem"),
+						resultSet.getInt("id"), resultSet.getString("nome"));
+				valorTotalDoCarrinho += resultSet.getDouble("totalPorItem");
 			}
+
+//			System.out.println("\nValor total: R$" + valorTotalDoCarrinho);
 
 			return resultSet;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
